@@ -1,7 +1,7 @@
 class SavantController < ApplicationController
 	def login
 		if !session[:google_drive_session].nil?
-			render(:action => 'overview')
+			redirect_to(:action => 'overview')
 		end
 	end
 
@@ -22,11 +22,28 @@ class SavantController < ApplicationController
 	end
 
 	def overview
+		if !session[:google_drive_session].nil?
+			# get root collection
+			rootCollection = session[:google_drive_session].root_collection			
 
-	end
+			# check if has the "Savant"  collection
+			savantCollection = rootCollection.subcollection_by_title("Savant")
 
-	def all
-		@foo = 'I pity the foo!'
+			# if it doesnt exist, create it
+			if savantCollection.nil?
+				savantCollection = rootCollection.create_subcollection("Savant")
+
+				# create subcollections
+				savantCollection.create_subcollection("Templates")
+				savantCollection.create_subcollection("Invoices")
+				savantCollection.create_subcollection("Spreadsheets")
+			end
+
+			logger.debug savantCollection
+
+		else
+			redirect_to(:action => 'login')
+		end
 	end
 end
 

@@ -25,8 +25,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'thin'
 gem 'jquery-rails'
-gem 'google_drive'
+gem 'google_drive', :path => "/home/kasper/gems/google_drive"
 
 #gem 'gdata'
 
