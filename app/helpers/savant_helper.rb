@@ -1,0 +1,2 @@
+module SavantHelper
+end

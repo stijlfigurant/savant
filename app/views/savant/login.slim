@@ -1,0 +1,13 @@
+h1 Login
+
+== form_for(:user, :url=>{:action => 'do_login'}, :html=>{:id => 'login-form'}) do |f|
+	
+	== f.label(:email, "Email*")
+	== f.text_field(:email)
+
+	== f.label(:password, "Password*")
+	== f.password_field(:password)
+			
+	== submit_tag("Login")
+		
+==error_messages_for(@user)

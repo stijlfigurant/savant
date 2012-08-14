@@ -1,0 +1,9 @@
+- if object && object.errors.size > 0
+	
+	#errorExplanation
+		p There were problems with the following fields:
+		p
+			- object.errors.full_messages.each do |msg|
+				span
+					== msg
+					| ,&nbsp;
