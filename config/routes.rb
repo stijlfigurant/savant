@@ -4,6 +4,7 @@ Savant::Application.routes.draw do
 
   match '/' => 'savant#login'
   match '/do_login' => 'savant#do_login'
+  match '/logout' => 'savant#logout'
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

@@ -1,6 +1,6 @@
 class SavantController < ApplicationController
 	def login
-		if session[:token]
+		if !session[:google_drive_session].nil?
 			render(:action => 'overview')
 		end
 	end
@@ -8,17 +8,17 @@ class SavantController < ApplicationController
 	def do_login
 		@user = User.new(params[:user])
 		if @user.valid?
-			client_login_handler = GData::Auth::ClientLogin.new('writely', :account_type => 'HOSTED')
-			token = client_login_handler.get_token(@user.email, @user.password, 'savant')
-			client = GData::Client::Base.new(:auth_handler => client_login_handler)
-
-			session[:token] = token
-			session[:client] = client
-
-			render(:action => 'overview')
-		else
-			render(:action => 'login')
+			session[:google_drive_session] = GoogleDrive.login(@user.email, @user.password)
+			logger.debug session.inspect
 		end
+
+		redirect_to(:action => 'login')
+	end
+
+	def logout
+		reset_session
+		
+		redirect_to(:action => 'login')
 	end
 
 	def overview

@@ -26,7 +26,9 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'gdata'
+gem 'google_drive'
+
+#gem 'gdata'
 
 #gem 'execjs'
 #gem 'therubyracer'
