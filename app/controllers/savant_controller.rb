@@ -1,3 +1,5 @@
+include SavantModule
+
 class SavantController < ApplicationController
 	def login
 		if !session[:google_drive_session].nil?
@@ -22,24 +24,38 @@ class SavantController < ApplicationController
 	end
 
 	def overview
-		if !session[:google_drive_session].nil?
+		drive = session[:google_drive_session]
+
+		if !drive.nil?
+			
+			# TODO: Move all this into SavantModule
 			# get root collection
-			rootCollection = session[:google_drive_session].root_collection			
+			rootCollection = drive.root_collection			
 
 			# check if has the "Savant"  collection
-			savantCollection = rootCollection.subcollection_by_title("Savant")
+			savantCollection = rootCollection.subcollection_by_title(SavantModule::SAVANT)
+			spreadSheets = nil
 
 			# if it doesnt exist, create it
 			if savantCollection.nil?
-				savantCollection = rootCollection.create_subcollection("Savant")
+				savantCollection = rootCollection.create_subcollection(SavantModule::SAVANT)
 
 				# create subcollections
-				savantCollection.create_subcollection("Templates")
-				savantCollection.create_subcollection("Invoices")
-				savantCollection.create_subcollection("Spreadsheets")
+				savantCollection.create_subcollection(SavantModule::TEMPLATES)
+				savantCollection.create_subcollection(SavantModule::INVOICES)
+				spreadSheets = savantCollection.create_subcollection(SavantModule::SPREADSHEETS)
 			end
 
-			logger.debug savantCollection
+			# get spreadsheets subcollection
+			if spreadSheets.nil?
+				spreadSheets = savantCollection.subcollection_by_title(SavantModule::SPREADSHEETS)
+			end
+
+			# create spreadsheets
+			SavantModule.create_sheet(drive, SavantModule::CLIENTS_SHEET, spreadSheets)
+			SavantModule.create_sheet(drive, SavantModule::PROJECTS_SHEET, spreadSheets)
+			SavantModule.create_sheet(drive, SavantModule::INVOICES_SHEET, spreadSheets)
+			
 
 		else
 			redirect_to(:action => 'login')
