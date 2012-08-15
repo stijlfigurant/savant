@@ -3,7 +3,7 @@ include SavantModule
 class SavantController < ApplicationController
 	def login
 		if !session[:google_drive_session].nil?
-			redirect_to(:action => 'overview')
+			redirect_to(:action => 'dashboard')
 		end
 	end
 
@@ -23,7 +23,7 @@ class SavantController < ApplicationController
 		redirect_to(:action => 'login')
 	end
 
-	def overview
+	def dashboard
 		drive = session[:google_drive_session]
 
 		if !drive.nil?
@@ -52,13 +52,41 @@ class SavantController < ApplicationController
 			end
 
 			# create spreadsheets
-			SavantModule.create_sheet(drive, SavantModule::CLIENTS_SHEET, spreadSheets)
-			SavantModule.create_sheet(drive, SavantModule::PROJECTS_SHEET, spreadSheets)
-			SavantModule.create_sheet(drive, SavantModule::INVOICES_SHEET, spreadSheets)
+			clients = SavantModule.create_sheet(drive, SavantModule::CLIENTS_SHEET, spreadSheets)
+			@projects = SavantModule.create_sheet(drive, SavantModule::PROJECTS_SHEET, spreadSheets).worksheets[0]
+			@invoices = SavantModule.create_sheet(drive, SavantModule::INVOICES_SHEET, spreadSheets).worksheets[0]
 			
-
+			#logger.debug invoices.inspect
 		else
 			redirect_to(:action => 'login')
+		end
+	end
+
+	def add_invoice
+		@invoice = params[:invoice]
+
+		if !@invoice.nil?
+			logger.debug @invoice
+
+			redirect_to(:action => 'dashboard')
+		end
+	end
+
+	def add_project
+		@project = params[:invoice]
+
+		if !@project.nil?
+			logger.debug @project
+
+			redirect_to(:action => 'dashboard')
+		end
+	end
+
+	def add_client
+		if !@client.nil?
+			logger.debug @client
+
+			redirect_to(:action => 'dashboard')
 		end
 	end
 end

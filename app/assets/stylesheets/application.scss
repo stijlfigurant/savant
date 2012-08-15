@@ -13,3 +13,26 @@
 */
 
 @import "foundation";
+
+#masthead {
+	width:100%;
+	background-color: #333;
+	.nav-bar {
+		margin-top:0px;
+		margin-bottom: 0px;
+	}
+}
+
+table.columns {
+	padding:0px;
+}
+
+form.custom {
+	select { 
+		display: none;
+	}
+}
+
+section {
+	margin-top:32px;
+}

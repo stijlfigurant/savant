@@ -3,11 +3,44 @@ html
 		title Savant
 		
 		= stylesheet_link_tag  "application", :media => "all"
-		= javascript_include_tag "application"
 		= csrf_meta_tags
 
 		meta name="viewport" content="width=device-width, initial-scale=1.0"
 	body
+		header#masthead.row
+			ul.left.nav-bar
+				li.active
+					a href==url_for(:action => 'dashboard') Dashboard
+				li.has-flyout
+					a href==url_for(:action => 'invoices') Invoices
+					a.flyout-toggle href="#"
+						span
+					ul.flyout
+						li
+							a href==url_for(:action => 'add_invoice')  Add Invoice
+				li.has-flyout
+					a href==url_for(:action => 'projects') Projects
+					a.flyout-toggle href="#"
+						span
+					ul.flyout
+						li
+							a href==url_for(:action => 'add_project')  Add Project
+				li.has-flyout
+					a href==url_for(:action => 'clients') Clients
+					a.flyout-toggle href="#"
+						span
+					ul.flyout
+						li
+							a href==url_for(:action => 'add_client') Add Client
+				li
+					a href==url_for(:action => 'settings') Settings
+			ul.right.nav-bar
+				li
+					a href==url_for(:action => 'logout') Logout
 		#main
 			.wrapper.row
 				= yield
+
+	/ Javascript at the bottom for fast page loading
+    == javascript_include_tag "vendor/jquery-1.7.2.min"
+    == javascript_include_tag "application"

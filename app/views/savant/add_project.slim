@@ -1,0 +1,40 @@
+h1.offset-by-two Add Project
+
+== form_for(:project, :url=>{:action => 'add_project'}, :html=>{:id => 'add-project-form', :class => 'custom'}) do |f|
+	.row
+		.two.columns
+			== f.label(:id, "ID:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:id, :value => "001", :disabled => true)
+	.row
+		.two.columns
+			== f.label(:name, "Name:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:name)
+	
+	.row
+		/ no clients? -> put button add client here
+		.two.columns
+			== f.label(:client, "Client:", :class => "right inline")
+		.ten.columns
+			== f.select(:client, options_for_select(["TribalDDB", "Razorfish UK", "BBH London"]), :style => 'display:none;')
+			.custom.dropdown
+				a.current href="#" TribalDDB
+				a.selector
+				ul
+					li Razorfish UK
+					li BBH London
+	.row
+		.two.columns
+			== f.label(:status, "Status:", :class => "right inline")
+		.ten.columns
+			== f.select(:status, options_for_select(["Running", "Completed"]), :style => 'display:none;')
+			.custom.dropdown
+				a.current href="#" Running
+				a.selector
+				ul
+					li Completed
+
+	== submit_tag("Submit", :class => "button small offset-by-two")
+
+==error_messages_for(@user)

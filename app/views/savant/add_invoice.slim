@@ -1,0 +1,73 @@
+h1.offset-by-two Add Invoice
+
+== form_for(:invoice, :url=>{:action => 'add_invoice'}, :html=>{:id => 'add-invoice-form', :class => 'custom'}) do |f|
+	.row
+		.two.columns
+			== f.label(:id, "ID:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:id, :value => "001", :disabled => true)
+	.row
+		.two.columns
+			== f.label(:project, "Project:", :class => "right inline")
+		/ no running projects? -> put button add project here
+		.ten.columns
+			== f.select(:project, options_for_select(["Dove Colour Stories", "McFlurry", "KLM Takes Care"]), :style => 'display:none;')
+			.custom.dropdown
+				a.current href="#" Dove Colour Stories
+				a.selector
+				ul
+					li McFlurry
+					li KLM Takes Care
+	
+	.row
+		.two.columns
+			== f.label(:currency, "Currency:", :class => "right inline")
+		.ten.columns
+			== f.select(:status, options_for_select(["EUR", "USD", "GBP"]), :style => 'display:none;')
+			.custom.dropdown
+				a.current href="#" EUR
+				a.selector
+				ul
+					li USD
+					li GBP
+
+
+	.row
+		.two.columns
+			== f.label(:amount, "Amount:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:amount, :placeholder => "0,00")
+
+	.row
+		.two.columns
+			== f.label(:description, "Description:", :class => "right inline")
+		.ten.columns
+			== f.text_area(:description, :rows => 3)
+
+	.row
+		.two.columns
+			== f.label(:status, "Status:", :class => "right inline")
+		.ten.columns
+			== f.select(:status, options_for_select(["Unsent", "Sent, unpaid", "Sent, paid"]), :style => 'display:none;')
+			.custom.dropdown
+				a.current href="#" Unsent
+				a.selector
+				ul
+					li Sent, unpaid
+					li Sent, paid
+
+	.row
+		.two.columns
+			== f.label(:send_date, "Send date:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:send_date, :placeholder => "dd/mm/yyyy")
+
+	.row
+		.two.columns
+			== f.label(:paid_date, "Paid date:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:paid_date, :placeholder => "dd/mm/yyy")
+
+	== submit_tag("Submit", :class => "button small offset-by-two")
+
+==error_messages_for(@user)

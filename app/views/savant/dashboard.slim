@@ -1,0 +1,43 @@
+/ TODO: no SAVANT folder? > add savant folder generation button
+
+section#invoices
+	h2 Outstanding Invoices
+
+
+	table.twelve.columns
+		thead
+			tr
+				th ID
+				th Name
+				th Amount
+				th Project
+				th Date
+				th Days Overdue
+		tbody
+			- for row in 2..@invoices.num_rows
+				tr
+					- for col in 1..@invoices.num_cols
+						td =@invoices[row,col]
+	p.right
+		a.button.small href==url_for(:action => 'add_invoice') Add an invoice
+
+hr
+
+section#projects
+	h2 Running Projects
+
+	table.twelve.columns
+		thead
+			tr
+				th ID
+				th Name
+				th Client
+		tbody
+			- for row in 2..@projects.num_rows
+				tr
+					- for col in 1..@projects.num_cols
+						td =@projects[row,col]
+	p.right					
+		a.button.small href==url_for(:action => 'add_project') Add a project
+
+hr
