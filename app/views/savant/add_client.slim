@@ -1,0 +1,55 @@
+h2.offset-by-two Add Client
+
+== form_for(:client, :url=>{:action => 'add_client'}, :html=>{:id => 'add-client-form', :class => 'custom'}) do |f|
+	.row
+		.two.columns
+			== f.label(:id, "ID:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:id, :value => @new_id, :disabled => true)
+
+	.row
+		.two.columns
+			== f.label(:name, "Name:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:name)
+
+	.row
+		.two.columns
+			== f.label(:address_1, "Address 1:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:address_1)
+
+	.row
+		.two.columns
+			== f.label(:address_2, "Address 2:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:address_2)
+
+	.row
+		.two.columns
+			== f.label(:zip_code, "Zip code:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:zip_code)
+
+	.row
+		.two.columns
+			== f.label(:city, "City:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:city)
+
+	.row
+		.two.columns
+			== f.label(:county, "Country:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:country)
+	
+	.row
+		.two.columns
+			== f.label(:vat_no, "VAT number:", :class => "right inline")
+		.ten.columns
+			== f.text_field(:vat_no)
+
+
+	== submit_tag("Submit", :class => "button small offset-by-two")
+
+==error_messages_for(@user)

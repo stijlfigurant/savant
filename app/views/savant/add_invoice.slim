@@ -1,4 +1,4 @@
-h1.offset-by-two Add Invoice
+h2.offset-by-two Add Invoice
 
 == form_for(:invoice, :url=>{:action => 'add_invoice'}, :html=>{:id => 'add-invoice-form', :class => 'custom'}) do |f|
 	.row
@@ -11,13 +11,13 @@ h1.offset-by-two Add Invoice
 			== f.label(:project, "Project:", :class => "right inline")
 		/ no running projects? -> put button add project here
 		.ten.columns
-			== f.select(:project, options_for_select(["Dove Colour Stories", "McFlurry", "KLM Takes Care"]), :style => 'display:none;')
+			== f.select(:project, options_for_select(@projectsOptions), :style => 'display:none;')
 			.custom.dropdown
-				a.current href="#" Dove Colour Stories
+				a.current href="#" =@projectsOptions.keys[0]
 				a.selector
 				ul
-					li McFlurry
-					li KLM Takes Care
+					- for i in 1..@projectsOptions.keys.size
+						li =@projectsOptions.keys[i]
 	
 	.row
 		.two.columns
@@ -64,9 +64,9 @@ h1.offset-by-two Add Invoice
 
 	.row
 		.two.columns
-			== f.label(:paid_date, "Paid date:", :class => "right inline")
+			== f.label(:pay_date, "Pay date:", :class => "right inline")
 		.ten.columns
-			== f.text_field(:paid_date, :placeholder => "dd/mm/yyy")
+			== f.text_field(:pay_date, :placeholder => "dd/mm/yyy")
 
 	== submit_tag("Submit", :class => "button small offset-by-two")
 

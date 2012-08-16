@@ -1,11 +1,11 @@
-h1.offset-by-two Add Project
+h2.offset-by-two Add Project
 
 == form_for(:project, :url=>{:action => 'add_project'}, :html=>{:id => 'add-project-form', :class => 'custom'}) do |f|
 	.row
 		.two.columns
 			== f.label(:id, "ID:", :class => "right inline")
 		.ten.columns
-			== f.text_field(:id, :value => "001", :disabled => true)
+			== f.text_field(:id, :value => @new_id, :disabled => true)
 	.row
 		.two.columns
 			== f.label(:name, "Name:", :class => "right inline")
@@ -17,13 +17,13 @@ h1.offset-by-two Add Project
 		.two.columns
 			== f.label(:client, "Client:", :class => "right inline")
 		.ten.columns
-			== f.select(:client, options_for_select(["TribalDDB", "Razorfish UK", "BBH London"]), :style => 'display:none;')
+			== f.select(:client, options_for_select(@clientsOptions), :style => 'display:none;')
 			.custom.dropdown
-				a.current href="#" TribalDDB
+				a.current href="#" =@clientsOptions.keys[0]
 				a.selector
 				ul
-					li Razorfish UK
-					li BBH London
+					- for i in 1..@clientsOptions.keys.size
+						li =@clientsOptions.keys[i]
 	.row
 		.two.columns
 			== f.label(:status, "Status:", :class => "right inline")

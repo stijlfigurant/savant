@@ -52,7 +52,7 @@ class SavantController < ApplicationController
 			end
 
 			# create spreadsheets
-			clients = SavantModule.create_sheet(drive, SavantModule::CLIENTS_SHEET, spreadSheets)
+			@clients = SavantModule.create_sheet(drive, SavantModule::CLIENTS_SHEET, spreadSheets).worksheets[0]
 			@projects = SavantModule.create_sheet(drive, SavantModule::PROJECTS_SHEET, spreadSheets).worksheets[0]
 			@invoices = SavantModule.create_sheet(drive, SavantModule::INVOICES_SHEET, spreadSheets).worksheets[0]
 			
@@ -63,28 +63,72 @@ class SavantController < ApplicationController
 	end
 
 	def add_invoice
-		@invoice = params[:invoice]
+		drive = session[:google_drive_session]
 
-		if !@invoice.nil?
-			logger.debug @invoice
+		# fill in possible projects
+		projectsSheet = SavantModule.get_sheet(drive, SavantModule::PROJECTS_SHEET).worksheets[0]
+		projectsArray = SavantModule.worksheet_to_array(projectsSheet, SavantModule::PROJECTS_HASHARRAY)
+		@projectsOptions = {}
+		
+		for project in projectsArray
+			@projectsOptions[project["name"]] = project["id"]
+		end
+
+		# get worksheet
+		worksheet = SavantModule.get_sheet(drive, SavantModule::INVOICES_SHEET).worksheets[0]
+
+		# get new id
+		@new_id = SavantModule.get_new_id(worksheet)
+
+		if !params[:invoice].nil?
+
+			params[:invoice]["id"] = @new_id
+			SavantModule.insert_values(worksheet, params[:invoice], SavantModule::INVOICES_HASHARRAY)
 
 			redirect_to(:action => 'dashboard')
 		end
 	end
 
 	def add_project
-		@project = params[:invoice]
+		drive = session[:google_drive_session]
 
-		if !@project.nil?
-			logger.debug @project
+		# fill in possible clients
+		clientsSheet = SavantModule.get_sheet(drive, SavantModule::CLIENTS_SHEET).worksheets[0]
+		clientsArray = SavantModule.worksheet_to_array(clientsSheet, SavantModule::CLIENTS_HASHARRAY)
+		@clientsOptions = {}
+		
+		for client in clientsArray
+			@clientsOptions[client["name"]] = client["id"]
+		end
 
+		# get worksheet
+		worksheet = SavantModule.get_sheet(drive, SavantModule::PROJECTS_SHEET).worksheets[0]
+
+		# get new id
+		@new_id = SavantModule.get_new_id(worksheet)
+
+		if !params[:project].nil?
+						
+			params[:project]["id"] = @new_id
+			SavantModule.insert_values(worksheet, params[:project], SavantModule::PROJECTS_HASHARRAY)
+			
 			redirect_to(:action => 'dashboard')
 		end
 	end
 
 	def add_client
-		if !@client.nil?
-			logger.debug @client
+		drive = session[:google_drive_session]
+		
+		# get worksheet
+		worksheet = SavantModule.get_sheet(drive, SavantModule::CLIENTS_SHEET).worksheets[0]
+
+		# get new id
+		@new_id = SavantModule.get_new_id(worksheet)
+
+		if !params[:client].nil?
+
+			params[:client]["id"] = @new_id
+			SavantModule.insert_values(worksheet, params[:client], SavantModule::CLIENTS_HASHARRAY)
 
 			redirect_to(:action => 'dashboard')
 		end
