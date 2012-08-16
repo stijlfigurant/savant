@@ -14,16 +14,25 @@ h2.offset-by-two Add Project
 	
 	.row
 		/ no clients? -> put button add client here
-		.two.columns
-			== f.label(:client, "Client:", :class => "right inline")
-		.ten.columns
-			== f.select(:client, options_for_select(@clientsOptions), :style => 'display:none;')
-			.custom.dropdown
-				a.current href="#" =@clientsOptions.keys[0]
-				a.selector
-				ul
-					- for i in 1..@clientsOptions.keys.size
-						li =@clientsOptions.keys[i]
+		- if @clientsOptions.keys.size > 0
+
+			.two.columns
+				== f.label(:client, "Client:", :class => "right inline")
+			.ten.columns
+				== f.select(:client, options_for_select(@clientsOptions), :style => 'display:none;')
+				.custom.dropdown
+					a.current href="#" =@clientsOptions.keys[0]
+					a.selector
+					ul
+						- for i in 1..@clientsOptions.keys.size
+							li =@clientsOptions.keys[i]
+		- else
+			.two.columns
+				== f.label(:client, "Client:", :class => "right inline")
+			.ten.columns
+				p 
+					a.button.small href==url_for(:action => 'add_client') Add a client first
+
 	.row
 		.two.columns
 			== f.label(:status, "Status:", :class => "right inline")
@@ -34,7 +43,8 @@ h2.offset-by-two Add Project
 				a.selector
 				ul
 					li Completed
-
-	== submit_tag("Submit", :class => "button small offset-by-two")
+	
+	- if @clientsOptions.keys.size > 0
+		== submit_tag("Submit", :class => "button small offset-by-two")
 
 ==error_messages_for(@user)

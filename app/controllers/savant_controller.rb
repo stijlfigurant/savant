@@ -85,7 +85,7 @@ class SavantController < ApplicationController
 			params[:invoice]["id"] = @new_id
 			SavantModule.insert_values(worksheet, params[:invoice], SavantModule::INVOICES_HASHARRAY)
 
-			redirect_to(:action => 'dashboard')
+			redirect_to(:action => 'overview', :id => 'invoices')
 		end
 	end
 
@@ -112,7 +112,7 @@ class SavantController < ApplicationController
 			params[:project]["id"] = @new_id
 			SavantModule.insert_values(worksheet, params[:project], SavantModule::PROJECTS_HASHARRAY)
 			
-			redirect_to(:action => 'dashboard')
+			redirect_to(:action => 'overview', :id => 'projects')
 		end
 	end
 
@@ -130,7 +130,19 @@ class SavantController < ApplicationController
 			params[:client]["id"] = @new_id
 			SavantModule.insert_values(worksheet, params[:client], SavantModule::CLIENTS_HASHARRAY)
 
-			redirect_to(:action => 'dashboard')
+			redirect_to(:action => 'overview', :id => 'clients')
+		end
+	end
+
+	def overview
+		drive = session[:google_drive_session]
+
+		if params[:id] == "invoices"
+			@worksheet = SavantModule.get_sheet(drive, SavantModule::INVOICES_SHEET).worksheets[0]
+		elsif params[:id] == "clients"
+			@worksheet = SavantModule.get_sheet(drive, SavantModule::CLIENTS_SHEET).worksheets[0]
+		elsif params[:id] == "projects"
+			@worksheet = SavantModule.get_sheet(drive, SavantModule::PROJECTS_SHEET).worksheets[0]
 		end
 	end
 end

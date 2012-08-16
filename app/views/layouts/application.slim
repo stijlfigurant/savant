@@ -12,21 +12,21 @@ html
 				li.active
 					a href==url_for(:action => 'dashboard') Dashboard
 				li.has-flyout
-					a href==url_for(:action => 'invoices') Invoices
+					a href==overview_path('invoices') Invoices
 					a.flyout-toggle href="#"
 						span
 					ul.flyout
 						li
 							a href==url_for(:action => 'add_invoice')  Add Invoice
 				li.has-flyout
-					a href==url_for(:action => 'projects') Projects
+					a href==overview_path('projects') Projects
 					a.flyout-toggle href="#"
 						span
 					ul.flyout
 						li
 							a href==url_for(:action => 'add_project')  Add Project
 				li.has-flyout
-					a href==url_for(:action => 'clients') Clients
+					a href==overview_path('clients') Clients
 					a.flyout-toggle href="#"
 						span
 					ul.flyout

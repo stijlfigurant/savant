@@ -7,17 +7,25 @@ h2.offset-by-two Add Invoice
 		.ten.columns
 			== f.text_field(:id, :value => "001", :disabled => true)
 	.row
-		.two.columns
-			== f.label(:project, "Project:", :class => "right inline")
-		/ no running projects? -> put button add project here
-		.ten.columns
-			== f.select(:project, options_for_select(@projectsOptions), :style => 'display:none;')
-			.custom.dropdown
-				a.current href="#" =@projectsOptions.keys[0]
-				a.selector
-				ul
-					- for i in 1..@projectsOptions.keys.size
-						li =@projectsOptions.keys[i]
+
+		- if @projectsOptions.keys.size > 0
+			.two.columns
+				== f.label(:project, "Project:", :class => "right inline")
+			/ no running projects? -> put button add project here
+			.ten.columns
+				== f.select(:project, options_for_select(@projectsOptions), :style => 'display:none;')
+				.custom.dropdown
+					a.current href="#" =@projectsOptions.keys[0]
+					a.selector
+					ul
+						- for i in 1..@projectsOptions.keys.size
+							li =@projectsOptions.keys[i]
+		- else
+			.two.columns
+				== f.label(:project, "Project:", :class => "right inline")
+			.ten.columns
+				p 
+					a.button.small href==url_for(:action => 'add_project') Add a project first
 	
 	.row
 		.two.columns
@@ -68,6 +76,7 @@ h2.offset-by-two Add Invoice
 		.ten.columns
 			== f.text_field(:pay_date, :placeholder => "dd/mm/yyy")
 
-	== submit_tag("Submit", :class => "button small offset-by-two")
+	- if @projectsOptions.keys.size > 0
+		== submit_tag("Submit", :class => "button small offset-by-two")
 
 ==error_messages_for(@user)

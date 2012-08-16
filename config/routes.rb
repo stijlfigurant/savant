@@ -7,14 +7,13 @@ Savant::Application.routes.draw do
   match '/logout' => 'savant#logout'
   
   match '/dashboard' => 'savant#dashboard'
-  match '/invoices' => 'savant#invoices'
-  match '/projects' => 'savant#projects'
-  match '/clients' => 'savant#clients'
   match '/settings' => 'savant#settings'
   
   match '/add_invoice' => 'savant#add_invoice'
   match '/add_project' => 'savant#add_project'
   match '/add_client' => 'savant#add_client'
+
+  match "/overview/:id", :to => "savant#overview", :as => :overview
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
