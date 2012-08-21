@@ -104,6 +104,8 @@ class SavantController < ApplicationController
 
 			client = SavantModule.hash_by_id(clientsArray, project["client"])
 
+
+
 			currency = ""
 
 			if params[:invoice]["currency"] == "EUR"
@@ -138,6 +140,21 @@ class SavantController < ApplicationController
 				invoice_str = invoice_str.gsub('#{total_amount}', currency + " " +  total.to_s )										
 			end
 
+			# get settings
+			settingSheet = SavantModule.get_sheet(drive, SavantModule::SETTINGS_SHEET).worksheets[0]
+			settings = SavantModule.worksheet_to_array(settingSheet, SavantModule::SETTINGS_HASHARRAY)[0]
+
+			invoice_str = invoice_str.gsub('#{settings_bankaccount}', settings["bank_account"])
+			invoice_str = invoice_str.gsub('#{settings_iban}', settings["iban"])
+			invoice_str = invoice_str.gsub('#{settings_swift}', settings["swift"])
+			invoice_str = invoice_str.gsub('#{settings_name}', settings["name"])
+			invoice_str = invoice_str.gsub('#{settings_address}', settings["address"])
+			invoice_str = invoice_str.gsub('#{settings_zip_code}', settings["zip_code"])
+			invoice_str = invoice_str.gsub('#{settings_city}', settings["city"])
+			invoice_str = invoice_str.gsub('#{settings_phone}', settings["phone"])
+			invoice_str = invoice_str.gsub('#{settings_url}', settings["url"])
+			invoice_str = invoice_str.gsub('#{settings_roc}', settings["roc"])
+			invoice_str = invoice_str.gsub('#{settings_vat_no}', settings["vat_no"])
 
 			# upload file
 			file = drive.upload_from_string(invoice_str, invoice_title, :content_type => "text/html")
@@ -205,6 +222,7 @@ class SavantController < ApplicationController
 		end
 	end
 end
+
 
 
 

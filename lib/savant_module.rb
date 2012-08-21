@@ -12,6 +12,7 @@ module SavantModule
     INVOICES_SHEET = "Invoices Overview"
     PROJECTS_SHEET = "Projects Overview"
     CLIENTS_SHEET = "Clients Overview"
+    SETTINGS_SHEET = "Settings"
 
 	INVOICES_HASHARRAY = [
     	{"key" => "id", 		"string" => "ID" },
@@ -40,6 +41,20 @@ module SavantModule
     	{"key" => "city",		"string" => "City" },
     	{"key" => "country",	"string" => "Country" },
     	{"key" => "vat_no",		"string" => "VAT Number" }
+    ]
+
+     SETTINGS_HASHARRAY = [
+        {"key" => "name",       "string" => "Name" },   
+        {"key" => "address",    "string" => "Address" },
+        {"key" => "zip_code",   "string" => "Zipcode" },
+        {"key" => "city",       "string" => "City" },
+        {"key" => "phone",      "string" => "Phone" },
+        {"key" => "url",        "string" => "Url" },
+        {"key" => "roc",        "string" => "Room of Commerce" },
+        {"key" => "vat_no",     "string" => "VAT Number" },
+        {"key" => "bank_account","string" => "Bank Account" },
+        {"key" => "iban",       "string" => "IBAN" },
+        {"key" => "swift",       "string" => "Swift" }
     ]
 
     # TODO: predefine rows
