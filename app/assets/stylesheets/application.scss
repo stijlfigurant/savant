@@ -36,3 +36,25 @@ form.custom {
 section {
 	margin-top:32px;
 }
+
+.ui-datepicker-header {
+	background-color: white;
+	padding-top:8px;
+	padding-bottom:8px;
+	border: 1px solid #DDD;
+	border-bottom: 0px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	.ui-datepicker-prev {
+		left:8px;
+		position: absolute;
+	}
+	.ui-datepicker-next {
+		right:8px;
+		position: absolute;
+	}
+	.ui-datepicker-title {
+		text-align: center;
+	}
+}

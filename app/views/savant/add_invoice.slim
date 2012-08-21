@@ -31,7 +31,7 @@ h2.offset-by-two Add Invoice
 		.two.columns
 			== f.label(:currency, "Currency:", :class => "right inline")
 		.ten.columns
-			== f.select(:status, options_for_select(["EUR", "USD", "GBP"]), :style => 'display:none;')
+			== f.select(:currency, options_for_select(["EUR", "USD", "GBP"]), :style => 'display:none;')
 			.custom.dropdown
 				a.current href="#" EUR
 				a.selector

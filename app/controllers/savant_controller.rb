@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 include SavantModule
 
 class SavantController < ApplicationController
@@ -85,6 +87,63 @@ class SavantController < ApplicationController
 			params[:invoice]["id"] = @new_id
 			SavantModule.insert_values(worksheet, params[:invoice], SavantModule::INVOICES_HASHARRAY)
 
+			# new invoice title = Invoice_id_projectid
+			invoice_title = "Invoice_" + @new_id.to_s
+
+			# create new invoice
+			# get invoice template 
+			savantCollection = SavantModule.get_collection(drive)
+    		collection = savantCollection.subcollection_by_title(SavantModule::TEMPLATES)
+			template = collection.files("title" => "Invoice", "title-exact" => "true")[0]
+
+			# get client details
+			project = SavantModule.hash_by_id(projectsArray, params[:invoice]["project"])
+			
+			clientsSheet = SavantModule.get_sheet(drive, SavantModule::CLIENTS_SHEET).worksheets[0]
+			clientsArray = SavantModule.worksheet_to_array(clientsSheet, SavantModule::CLIENTS_HASHARRAY)
+
+			client = SavantModule.hash_by_id(clientsArray, project["client"])
+
+			currency = ""
+
+			if params[:invoice]["currency"] == "EUR"
+				currency = "€"
+			elsif params[:invoice]["currency"] == "USD"
+				currency = "$"
+			elsif params[:invoice]["currency"] == "GBP"
+				currency = "£"
+			end
+			
+			# compile invoice strings
+			invoice_str = template.download_to_string(:content_type => "text/html")
+			invoice_str = invoice_str.gsub('#{invoice_id}', @new_id.to_s)
+			invoice_str = invoice_str.gsub('#{invoice_send_date}', params[:invoice]["send_date"])
+			invoice_str = invoice_str.gsub('#{invoice_description}', params[:invoice]["description"])
+			invoice_str = invoice_str.gsub('#{amount}', currency + " " + params[:invoice]["amount"])
+			invoice_str = invoice_str.gsub('#{job_id}', params[:invoice]["project"].to_s)
+			
+			client_address = client["name"] + "<br />" + client["address_1"] + "<br />" + client["address_2"] + "<br />" + client["zip_code"] + "<br />" + client["city"] + "<br />" + client["country"]
+			invoice_str = invoice_str.gsub('#{client_address}', client_address)
+
+			if client["country"] != "The Netherlands"
+				invoice_str = invoice_str.gsub('#{diverted_vat}', "Vat is diverted to: " + client["vat_no"] )
+				invoice_str = invoice_str.gsub('#{total_amount}', currency + " " + params[:invoice]["amount"] )										
+				invoice_str = invoice_str.gsub('#{vat_amount}', "")		
+			else
+				vat =  params[:invoice]["amount"].to_f * 0.19
+				total = params[:invoice]["amount"].to_i + vat
+
+				invoice_str = invoice_str.gsub('#{diverted_vat}', "VAT 19%")	
+				invoice_str = invoice_str.gsub('#{vat_amount}', currency + " " + vat.to_s)
+				invoice_str = invoice_str.gsub('#{total_amount}', currency + " " +  total.to_s )										
+			end
+
+
+			# upload file
+			file = drive.upload_from_string(invoice_str, invoice_title, :content_type => "text/html")
+			invoiceCollection = savantCollection.subcollection_by_title(SavantModule::INVOICES)
+			invoiceCollection.add(file)
+
 			redirect_to(:action => 'overview', :id => 'invoices')
 		end
 	end
@@ -146,4 +205,6 @@ class SavantController < ApplicationController
 		end
 	end
 end
+
+
 

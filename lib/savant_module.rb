@@ -132,4 +132,17 @@ module SavantModule
 
     	worksheet.save()
     end
+
+    def hash_by_id(array, id)
+        for hash in array
+            Rails.logger.debug hash["id"]
+            Rails.logger.debug id
+            
+            if hash["id"].to_s == id.to_s
+                #logger.debug id
+                Rails.logger.debug hash
+                return hash
+            end
+        end
+    end
 end
